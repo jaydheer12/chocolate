@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CocoaCrave - Premium Handcrafted Chocolates</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(45, 27, 61, 0.8)), 
+                  url('bg.jpg') no-repeat center center/cover;
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* Header with Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.8rem 2.5rem;
+      background: rgba(20, 20, 30, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid rgba(187, 134, 252, 0.3);
+      box-shadow: 0 4px 20px rgba(187, 134, 252, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #f4d03f, #bb86fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    nav button {
+      padding: 11px 28px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(187, 134, 252, 0.2);
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, rgba(187, 134, 252, 0.2), rgba(187, 134, 252, 0.1));
+      color: #bb86fc;
+      border: 2px solid #bb86fc;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(135deg, #bb86fc, #9966ff);
+      color: #121212;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(187, 134, 252, 0.5);
+    }
+
+    .signup-btn {
+      background: linear-gradient(135deg, #bb86fc, #9966ff);
+      color: #121212;
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(135deg, #9966ff, #7744dd);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(187, 134, 252, 0.5);
+    }
+
+    nav button:active {
+      transform: translateY(0);
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-content h2 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #f4d03f, #03dac6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #e0e0e0;
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .description-box {
+      background: rgba(28, 28, 40, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 2.5rem;
+      border-radius: 15px;
+      border: 2px solid rgba(187, 134, 252, 0.3);
+      box-shadow: 0 8px 32px rgba(187, 134, 252, 0.2);
+      margin: 2rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .description-box:hover {
+      border-color: #bb86fc;
+      box-shadow: 0 12px 40px rgba(187, 134, 252, 0.4);
+    }
+
+    .description-box h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #03dac6;
+    }
+
+    .description-box p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #bbb;
+    }
+
+    /* Features Section - 4 in Single Line */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+      width: 100%;
+    }
+
+    .feature {
+      background: rgba(40, 40, 60, 0.6);
+      padding: 1.8rem;
+      border-radius: 12px;
+      border: 1px solid rgba(187, 134, 252, 0.2);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      background: rgba(50, 50, 70, 0.8);
+      border-color: #bb86fc;
+      box-shadow: 0 6px 20px rgba(187, 134, 252, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .feature h4 {
+      color: #bb86fc;
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .feature p {
+      color: #999;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Get Started Button at Bottom */
+    .cta-section {
+      margin-top: 4rem;
+      text-align: center;
+    }
+
+    .cta-btn-primary {
+      padding: 16px 45px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      background: linear-gradient(135deg, #03dac6, #00bca3);
+      color: #121212;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(3, 218, 198, 0.4);
+    }
+
+    .cta-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(3, 218, 198, 0.6);
+    }
+
+    .cta-btn-primary:active {
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(20, 20, 30, 0.9);
+      border-top: 1px solid rgba(187, 134, 252, 0.3);
+      padding: 2rem;
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .hero-content h2 {
+        font-size: 2.8rem;
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.2rem;
+      }
+
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      nav {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-content h2 {
+        font-size: 2.2rem;
+      }
+
+      .hero-content p {
+        font-size: 1rem;
+      }
+
+      .description-box {
+        padding: 1.8rem;
+      }
+
+      .description-box h3 {
+        font-size: 1.5rem;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .feature {
+        padding: 1.5rem;
+      }
+
+      .cta-btn-primary {
+        padding: 14px 35px;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      nav button {
+        padding: 9px 18px;
+        font-size: 0.8rem;
+      }
+
+      main {
+        padding: 1.5rem 1rem;
+      }
+
+      .hero-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+
+      .hero-content p {
+        font-size: 0.95rem;
+      }
+
+      .description-box {
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+      }
+
+      .description-box h3 {
+        font-size: 1.3rem;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .feature {
+        padding: 1.2rem;
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+      }
+
+      .feature h4 {
+        font-size: 0.95rem;
+      }
+
+      .feature p {
+        font-size: 0.85rem;
+      }
+
+      .cta-section {
+        margin-top: 2.5rem;
+      }
+
+      .cta-btn-primary {
+        padding: 12px 30px;
+        font-size: 0.95rem;
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍫 CocoaCrave</h1>
+    <nav>
+      <button class="login-btn" onclick="window.location='login.html'">Login</button>
+      <button class="signup-btn" onclick="window.location='register.html'">Sign Up</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-content">
+      <h2>Premium Handcrafted Chocolates</h2>
+      
+      <p>Discover the perfect blend of taste and luxury</p>
+
+      <div class="description-box">
+        <h3>Welcome to CocoaCrave</h3>
+        <p>
+          Your ultimate destination for premium handcrafted chocolates. Indulge in our rich collection 
+          of exotic flavors, special offers, and make every moment sweeter. At CocoaCrave, we believe that 
+          chocolate is not just a treat, but an experience. Each piece is crafted with passion and the finest 
+          ingredients to deliver pure bliss.
+        </p>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🎁</div>
+          <h4>Premium Quality</h4>
+          <p>Handcrafted with finest ingredients</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🚚</div>
+          <h4>Fast Delivery</h4>
+          <p>Quick & secure shipping worldwide</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💯</div>
+          <h4>100% Authentic</h4>
+          <p>Certified genuine products</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🛡️</div>
+          <h4>Secure Payment</h4>
+          <p>Safe & encrypted transactions</p>
+        </div>
+      </div>
+
+      <div class="cta-section">
+        <button class="cta-btn-primary" onclick="window.location='register.html'">
+          📝 Get Started Now
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CocoaCrave. All rights reserved. | Crafted with ❤️ & 🍫</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CocoaCrave - Premium Chocolates</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #000;
+      color: #eee;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      border-bottom: 2px solid #cc0000;
+      box-shadow: 0 4px 20px rgba(204, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    #searchBar {
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
+      border: 2px solid #cc0000;
+      background: rgba(255, 255, 255, 0.05);
+      outline: none;
+      color: #eee;
+      font-size: 1rem;
+      width: 300px;
+      transition: all 0.3s ease;
+    }
+
+    #searchBar:focus {
+      border-color: #ff0000;
+      background: rgba(255, 0, 0, 0.1);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+
+    #searchBar::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    #cartSummary {
+      color: #ff0000;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 0, 0, 0.1);
+      border-radius: 8px;
+      border: 1px solid #cc0000;
+    }
+
+    #logoutBtn {
+      padding: 0.8rem 1.8rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: white;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+    }
+
+    #logoutBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
+    }
+
+    .product-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+      padding: 2.5rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: 60vh;
+    }
+
+    .product {
+      background: rgba(20, 20, 20, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+      border-radius: 15px;
+      text-align: center;
+      position: relative;
+      border: 2px solid #cc0000;
+      box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .product:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 40px rgba(255, 0, 0, 0.6);
+      border-color: #ff0000;
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .product:hover img {
+      transform: scale(1.08);
+    }
+
+    .product h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: #ff0000;
+      font-weight: 700;
+    }
+
+    .product p {
+      margin: 8px 0;
+      font-size: 0.95rem;
+      color: #bbb;
+    }
+
+    .offer-badge {
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      padding: 8px 14px;
+      border-radius: 10px;
+      color: white;
+      font-size: 0.85rem;
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(255, 0, 0, 0.6);
+    }
+
+    .price {
+      color: #ffff00;
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin: 12px 0 15px 0;
+    }
+
+    .btn-buy, .btn-cart {
+      margin: 8px 5px 0;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-buy {
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      box-shadow: 0 4px 12px rgba(255, 0, 0, 0.5);
+    }
+
+    .btn-buy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 0, 0, 0.7);
+    }
+
+    .btn-cart {
+      background: linear-gradient(135deg, #cc0000, #990000);
+      box-shadow: 0 4px 12px rgba(204, 0, 0, 0.5);
+    }
+
+    .btn-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(204, 0, 0, 0.7);
+    }
+
+    #floatingCart {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: rgba(20, 20, 20, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      color: #eee;
+      display: none;
+      width: 380px;
+      max-height: 500px;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(255, 0, 0, 0.5);
+      border: 2px solid #cc0000;
+      z-index: 999;
+    }
+
+    #floatingCart h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-align: center;
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    #cartItems {
+      list-style: none;
+      margin: 15px 0;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    #cartItems li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 0, 0, 0.3);
+      font-size: 0.9rem;
+      color: #bbb;
+    }
+
+    #cartItems span {
+      color: #ffff00;
+      font-weight: 700;
+    }
+
+    #cartItems button {
+      margin-left: 8px;
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    #cartItems button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(255, 0, 0, 0.6);
+    }
+
+    #cartTotal {
+      text-align: right;
+      margin: 15px 0;
+      font-size: 1.2rem;
+      color: #ffff00;
+      font-weight: 700;
+      padding: 10px 0;
+      border-top: 2px solid #cc0000;
+      border-bottom: 2px solid #cc0000;
+    }
+
+    #checkoutBtn {
+      margin-top: 15px;
+      width: 100%;
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+    }
+
+    #checkoutBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
+    }
+
+    .no-products {
+      color: #bbb;
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.1rem;
+      grid-column: 1 / -1;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 0, 0, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff0000;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      nav {
+        flex-direction: column;
+      }
+
+      #searchBar {
+        width: 100%;
+      }
+
+      .product-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+
+      #floatingCart {
+        width: 90%;
+        left: 5%;
+        right: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.4rem;
+      }
+
+      .product-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 0.5rem;
+      }
+
+      #floatingCart {
+        width: 95%;
+        left: 2.5%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🍫 CocoaCrave Chocolates</h1>
+  <nav>
+    <input type="text" id="searchBar" placeholder="🔍 Search chocolates..." />
+    <span id="cartSummary">🛒 Cart: 0 items | ₹0</span>
+    <button id="logoutBtn">Logout</button>
+  </nav>
+</header>
+
+<div class="product-gallery" id="productsGrid"></div>
+
+<div id="floatingCart">
+  <h3>🛒 Your Cart</h3>
+  <ul id="cartItems"></ul>
+  <div id="cartTotal"></div>
+  <button id="checkoutBtn">Checkout</button>
+</div>
+
+<script>
+  if (!localStorage.getItem("cc_sess")) {
+    window.location.href = "login.html";
+  }
+
+  const products = [
+    {id:1, name:"Debauve & Gallais", price:499, img:"debauve & gallais.jpg", offer:"20% OFF"},
+    {id:2, name:"Fruit & Nut Milk", price:439, img:"fruit_nut_milk.jpg", offer:"10% OFF"},
+    {id:3, name:"Delafee", price:499, img:"delafée.jpg", offer:"15% OFF"},
+    {id:4, name:"Godiva Chocolatier", price:449, img:"download.jpg", offer:"5% OFF"},
+    {id:5, name:"Guylian", price:499, img:"guylian.jpg", offer:"30% OFF"},
+    {id:6, name:"House of Knipschildt", price:449, img:"House of Knipschildt, LLC.jpg", offer:"25% OFF"},
+    {id:7, name:"Vanilla Latte", price:439, img:"vanilla_latte.jpg", offer:"No Offer"},
+    {id:8, name:"Vosges Haut-Chocolate", price:439, img:"Vosges Haut-Chocolat.jpg", offer:"No Offer"},
+    {id:9, name:"Zest-Orange", price:479, img:"zest_orange.jpg", offer:"15% OFF"},
+    {id:10, name:"Toffee-Nut", price:459, img:"toffee_nut.jpg", offer:"20% OFF"},
+    {id:11, name:"To'ak Chocolate", price:489, img:"To'ak Chocolate.jpg", offer:"10% OFF"},
+    {id:12, name:"Tiramisu", price:499, img:"tiramisu.jpg", offer:"No Offer"},
+    {id:13, name:"Teuscher", price:459, img:"teuscher.jpg", offer:"5% OFF"},
+    {id:14, name:"Mint Chocolate", price:479, img:"MINT CHOCOLATE.jpg", offer:"25% OFF"},
+    {id:15, name:"Lindt Excellence", price:429, img:"LINDT EXCELLENCE.jpg", offer:"No Offer"}
+  ];
+
+  const productsGrid = document.getElementById("productsGrid");
+  const searchBar = document.getElementById("searchBar");
+  const cartSummary = document.getElementById("cartSummary");
+  const floatingCart = document.getElementById("floatingCart");
+  const cartItemsUl = document.getElementById("cartItems");
+  const cartTotalDiv = document.getElementById("cartTotal");
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  function getCart() {
+    return JSON.parse(localStorage.getItem("cc_cart") || "[]");
+  }
+
+  function setCart(cart) {
+    localStorage.setItem("cc_cart", JSON.stringify(cart));
+  }
+
+  function renderProducts(filter = "") {
+    const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+    
+    if (!filtered.length) {
+      productsGrid.innerHTML = '<div class="no-products">❌ No chocolates found!</div>';
+      return;
+    }
+
+    productsGrid.innerHTML = filtered.map(p => `
+      <div class="product">
+        ${p.offer !== "No Offer" ? `<div class="offer-badge">${p.offer}</div>` : ''}
+        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/220x180?text=${encodeURIComponent(p.name)}'" />
+        <h3>${p.name}</h3>
+        <p class="price">₹${p.price}</p>
+        <button class="btn-buy" onclick="buyNow(${p.id})">Buy Now</button>
+        <button class="btn-cart" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    `).join('');
+  }
+
+  function updateCartSummary() {
+    const cart = getCart();
+    const total = cart.reduce((sum, id) => {
+      const p = products.find(prod => prod.id === id);
+      return sum + (p ? p.price : 0);
+    }, 0);
+    cartSummary.textContent = `🛒 Cart: ${cart.length} items | ₹${total}`;
+    updateFloatingCart();
+  }
+
+  function updateFloatingCart() {
+    const cart = getCart();
+    if (!cart.length) {
+      floatingCart.style.display = "none";
+      return;
+    }
+    floatingCart.style.display = "block";
+
+    const itemCounts = {};
+    cart.forEach(id => (itemCounts[id] = (itemCounts[id] || 0) + 1));
+
+    let html = "";
+    let total = 0;
+    
+    Object.keys(itemCounts).forEach(id => {
+      const p = products.find(prod => prod.id == id);
+      if (p) {
+        const qty = itemCounts[id];
+        const subTotal = p.price * qty;
+        total += subTotal;
+        html += `<li>
+          <span>${p.name} x${qty}</span>
+          <span>₹${subTotal}</span>
+          <button onclick="removeFromCart(${p.id})">Remove</button>
+        </li>`;
+      }
+    });
+    
+    cartItemsUl.innerHTML = html;
+    cartTotalDiv.textContent = `Total: ₹${total}`;
+  }
+
+  window.addToCart = function(id) {
+    let cart = getCart();
+    cart.push(id);
+    setCart(cart);
+    updateCartSummary();
+    alert("✅ Added to cart!");
+  }
+
+  window.buyNow = function(id) {
+    let cart = getCart();
+    cart.push(id);
+    setCart(cart);
+    updateCartSummary();
+    alert("✅ Item added! Check your cart.");
+  }
+
+  window.removeFromCart = function(id) {
+    let cart = getCart();
+    let idx = cart.indexOf(Number(id));
+    if (idx > -1) {
+      cart.splice(idx, 1);
+      setCart(cart);
+      updateCartSummary();
+    }
+  }
+
+  searchBar.addEventListener("input", e => renderProducts(e.target.value));
+  
+  checkoutBtn.addEventListener("click", () => {
+    const cart = getCart();
+    if (!cart.length) {
+      alert("❌ Cart is empty!");
+      return;
+    }
+    setCart([]);
+    updateCartSummary();
+    alert("🎉 Thank you for your purchase!");
+  });
+
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("cc_sess");
+    localStorage.removeItem("cc_cart");
+    window.location.href = "login.html";
+  });
+
+  renderProducts();
+  updateCartSummary();
+</script>
+
+</body>
+</html>
